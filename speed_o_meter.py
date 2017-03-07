@@ -14,6 +14,8 @@ GPIO.setup(DOOR_SENSOR, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 currentTime = float(round(time.time()*1000))
 prevTime = float(round(time.time()*1000))
+speed=0
+prevSpeed=0
 
 while True:
 	try:
@@ -26,8 +28,10 @@ while True:
 			prevTime = currentTime
 			if(diff!=0):
 				speed = WHEEL_CIRCUMFERENCE / diff
-				if(speed<120):
-					print "running in " + str(speed) +"km/hr"
+				if((speed - prevSpeed)<10):
+					if(speed<120):
+						prevSpeed = speed
+						print "running in " + str(speed) +"km/hr"
 		sleep(0.01)
 	except KeyboardInterrupt:
 		GPIO.cleanup()
