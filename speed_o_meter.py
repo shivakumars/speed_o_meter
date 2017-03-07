@@ -16,6 +16,7 @@ currentTime = float(round(time.time()*1000))
 prevTime = float(round(time.time()*1000))
 speed=0
 prevSpeed=0
+distanceTravelled = 0;
 
 while True:
 	try:
@@ -30,8 +31,11 @@ while True:
 				speed = WHEEL_CIRCUMFERENCE / diff
 				if((speed - prevSpeed)<10):
 					if(speed<120):
+						distanceTravelled+=WHEEL_CIRCUMFERENCE
 						prevSpeed = speed
 						print "running in " + str(speed) +"km/hr"
+						if(distanceTravelled%100==0):
+							print str(distanceTravelled) + "m travelled"
 		sleep(0.01)
 	except KeyboardInterrupt:
 		GPIO.cleanup()
