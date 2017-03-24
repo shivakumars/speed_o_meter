@@ -45,10 +45,6 @@ LCD_D4 = 25
 LCD_D5 = 24
 LCD_D6 = 23
 LCD_D7 = 18
-<<<<<<< HEAD
-LED_ON = 15
-=======
->>>>>>> 8c62e44b5cb19092111bde9cb664687d5a0f0712
  
 # Define some device constants
 LCD_WIDTH = 16    # Maximum characters per line
@@ -173,7 +169,7 @@ def lcd_string(message,line):
     lcd_byte(ord(message[i]),LCD_CHR)
  
 if __name__ == '__main__':
-  print "called"
+ 
   try:
     main()
   except KeyboardInterrupt:
