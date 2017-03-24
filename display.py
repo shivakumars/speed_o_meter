@@ -40,12 +40,12 @@ import RPi.GPIO as GPIO
 import time
  
 # Define GPIO to LCD mapping
-LCD_RS = 21
-LCD_E  = 20
-LCD_D4 = 12
-LCD_D5 = 25
-LCD_D6 = 24
-LCD_D7 = 13
+LCD_RS = 7
+LCD_E  = 8
+LCD_D4 = 25
+LCD_D5 = 24
+LCD_D6 = 23
+LCD_D7 = 18
 LED_ON = 15
  
 # Define some device constants
@@ -193,7 +193,7 @@ def lcd_backlight(flag):
   GPIO.output(LED_ON, flag)
  
 if __name__ == '__main__':
- 
+  print "called"
   try:
     main()
   except KeyboardInterrupt:
