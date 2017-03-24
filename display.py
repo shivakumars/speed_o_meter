@@ -7,8 +7,7 @@
 #                /_/   /___/
 #
 #  lcd_16x2.py
-#  16x2 LCD Test Script with
-#  backlight control and text justification
+#  16x2 LCD Test Script
 #
 # Author : Matt Hawkins
 # Date   : 06/04/2015
@@ -40,13 +39,12 @@ import RPi.GPIO as GPIO
 import time
  
 # Define GPIO to LCD mapping
-LCD_RS = 21
-LCD_E  = 20
-LCD_D4 = 12
-LCD_D5 = 25
-LCD_D6 = 24
-LCD_D7 = 13
-LED_ON = 15
+LCD_RS = 7
+LCD_E  = 8
+LCD_D4 = 25
+LCD_D5 = 24
+LCD_D6 = 23
+LCD_D7 = 18
  
 # Define some device constants
 LCD_WIDTH = 16    # Maximum characters per line
@@ -62,7 +60,6 @@ E_DELAY = 0.0005
  
 def main():
   # Main program block
-   
   GPIO.setwarnings(False)
   GPIO.setmode(GPIO.BCM)       # Use BCM GPIO numbers
   GPIO.setup(LCD_E, GPIO.OUT)  # E
@@ -71,42 +68,33 @@ def main():
   GPIO.setup(LCD_D5, GPIO.OUT) # DB5
   GPIO.setup(LCD_D6, GPIO.OUT) # DB6
   GPIO.setup(LCD_D7, GPIO.OUT) # DB7
-  GPIO.setup(LED_ON, GPIO.OUT) # Backlight enable
  
   # Initialise display
   lcd_init()
  
-  # Toggle backlight on-off-on
-  lcd_backlight(True)
-  time.sleep(0.5)
-  lcd_backlight(False)
-  time.sleep(0.5)
-  lcd_backlight(True)
-  time.sleep(0.5)
- 
   while True:
  
-    # Send some centred text
-    lcd_string("Rasbperry Pi",LCD_LINE_1,2)
-    lcd_string("16x2 LCD Test",LCD_LINE_2,2)
+    # Send some test
+    lcd_string("Rasbperry Pi",LCD_LINE_1)
+    lcd_string("16x2 LCD Test",LCD_LINE_2)
  
     time.sleep(3) # 3 second delay
  
-    # Send some left justified text
-    lcd_string("1234567890123456",LCD_LINE_1,1)
-    lcd_string("abcdefghijklmnop",LCD_LINE_2,1)
+    # Send some text
+    lcd_string("1234567890123456",LCD_LINE_1)
+    lcd_string("abcdefghijklmnop",LCD_LINE_2)
  
     time.sleep(3) # 3 second delay
  
-    # Send some right justified text
-    lcd_string("Raspberrypi-spy",LCD_LINE_1,3)
-    lcd_string(".co.uk",LCD_LINE_2,3)
+    # Send some text
+    lcd_string("RaspberryPi-spy",LCD_LINE_1)
+    lcd_string(".co.uk",LCD_LINE_2)
  
-    time.sleep(3) # 20 second delay
+    time.sleep(3)
  
-    # Send some centred text
-    lcd_string("Follow me on",LCD_LINE_1,2)
-    lcd_string("Twitter @RPiSpy",LCD_LINE_2,2)
+    # Send some text
+    lcd_string("Follow me on",LCD_LINE_1)
+    lcd_string("Twitter @RPiSpy",LCD_LINE_2)
  
     time.sleep(3)
  
@@ -170,27 +158,15 @@ def lcd_toggle_enable():
   GPIO.output(LCD_E, False)
   time.sleep(E_DELAY)
  
-def lcd_string(message,line,style):
+def lcd_string(message,line):
   # Send string to display
-  # style=1 Left justified
-  # style=2 Centred
-  # style=3 Right justified
  
-  if style==1:
-    message = message.ljust(LCD_WIDTH," ")
-  elif style==2:
-    message = message.center(LCD_WIDTH," ")
-  elif style==3:
-    message = message.rjust(LCD_WIDTH," ")
+  message = message.ljust(LCD_WIDTH," ")
  
   lcd_byte(line, LCD_CMD)
  
   for i in range(LCD_WIDTH):
     lcd_byte(ord(message[i]),LCD_CHR)
- 
-def lcd_backlight(flag):
-  # Toggle backlight on-off-on
-  GPIO.output(LED_ON, flag)
  
 if __name__ == '__main__':
  
@@ -200,5 +176,5 @@ if __name__ == '__main__':
     pass
   finally:
     lcd_byte(0x01, LCD_CMD)
-    lcd_string("Goodbye!",LCD_LINE_1,2)
+    lcd_string("Goodbye!",LCD_LINE_1)
     GPIO.cleanup()
